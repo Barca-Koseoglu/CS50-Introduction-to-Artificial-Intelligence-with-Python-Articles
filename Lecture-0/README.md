@@ -149,9 +149,9 @@ only if you're really lucky. It doesn't have a reason for picking one place to g
 BFS, visually, looks very differnet from DFS. It will start by looking at the nodes 1 away from the A, so the 
 square on top and to the right. Then it explores the nodes immediately next to those nodes, and so forth.
 
-It's kind of like going hrough all of the nodes at the same time, bouncing between them.
+It's kind of like going through all of the nodes at the same time, bouncing between them.
 
-It does find the optimal solution, but it had to explore a lot of states.
+It does find the optimal solution, but it has to explore a lot of states.
 
 # Code
 To be continued...
