@@ -153,7 +153,7 @@ It's kind of like going through all of the nodes at the same time, bouncing betw
 
 It does find the optimal solution, but it has to explore a lot of states.
 
-# Code
+# Source Code
 We understand how BFS and DFS works in pseudocode, so here's and idea of what it would look like using Python
 
 ## Human Intuition
@@ -204,4 +204,103 @@ Notice in the last image the first fork in the road. the GBFS algorithm went wit
 
 If we take the steps into consideration, the greedy route appears to be way longer.
 
-Utilizing this, another informed search algorithm is called A* search. It expands a node with the lowest value of *g(n)* + *h(n)*, where g(n) is the cost to reach the node and h(n) is the estimated cost to the goal (Manhatten distance).
+Utilizing this, another informed search algorithm is called *A** search. It expands a node with the lowest value of *g(n)* + *h(n)*, where g(n) is the cost to reach the node and h(n) is the estimated cost to the goal (Manhatten distance). Instead of just considering a heuristic, we consider the cost to reach the node as well. Adding those two and going with the smallest node will give us the shortest path while traversing fewer nodes than BFS.
+
+<img width="248" alt="lecture0-7" src="https://github.com/user-attachments/assets/77023c03-9bc5-449a-84dc-4658958e7e3f">
+
+This would be how our agent would get to point B using the A* algorithm.
+
+A* is optimal if h(n) is admissible (it never overestimates the true cost) and h(n) is consistent (for every node n and successor n' with step cost c, h(n) <= h(n')+c)
+
+A* is fairly easy to implement, but choosing the heurisitc can be a challenge. The better the heurisitc is, the fewer states we'll have to explore., and the better the algorithm gets. The heuristic also has to satisfy the constraints. A* uses quite a bit of memory, but there are other versions of A* with a better heuristic that use less memory.
+
+# Search Algorithms in Adversarial Situations.
+
+Sometimes in search situations, we'll have to deal with **Adversarial Situations**. We have an agent trying to make intelligent decisions, but there's someone else that is fighting against it that has an opposite goal.
+
+For example, take tic-tac-toe. In a game, you try to get three x's or o's in a straight line in a 3x3 grid. Let's say our AI agent is x and goes first. It puts an x in the middle. The opponent, our agent's adversary, puts an o in the top middle. Then, our agent puts an X in the top right. The adversary has the opposite objective of our AI: to make it lose. So the adversary would try to stop our AI from winning, putting an o in the bottom left. But now, X has a clever move, which is to put an x in the middle right. Now x has two ways to win the game. The adversary can't win.
+
+The algorithm used to deal with adversarial situations is called **minimax**.
+
+## Minimax
+
+Computers don't understand what "win" and "lose" means. They just understand what numbers are. They also know if certain numbers are bigger, smaller, or equal to other numbers. So how can we translate a game on a grid to something numerical, something that the computer can understand.
+
+What we can do for a tic-tac-toe game is take the ways that a game might unfold and assign a value to it. O wins (-1), X wins (1), or a draw ensues (0).
+
+We'll call the O player the min player, and the X player the max player. The reason why is because the max player is trying to maximize the score, and the min player is trying to minimize the score. The score, in this case, ranges from -1 to 1. The max player is trying to get to 1 (X winning) while the min player is trying to get to -1 (O winning). But if winning for x (1) is not possible, it still tries to maximize the score, with 0 being the next biggest number (trying to get a draw).
+
+## Tic-Tac-Toe
+These are all the parts needed to encode it in an AI:
+
+S<sub>0</sub>: initial state, how the game begins
+
+Player(s): returns which player to move in state s
+
+Actions(s): returns legal moves in state s
+
+Result(s, a): returns state after action a taken in state s, the transition model
+
+Terminal(s): checks if state s is a terminal state, so if the game has ended
+
+Utility(s): final numerical value for terminal state s, to determine who won or lost or if there was a draw
+
+Minimax is a recursive algorithm. Imagine we're in the middle of the game and it's O's turn to make a move. We're O. X is trying to maximize the score, and O is trying to minimize it. Since we're in the middle of the game, we don't yet know the value. We have to consider all legal moves we can make. Then, if the game hasn't ended yet, we go to the new states and look at it from the opposite perspective, trying to maximize our move since it's X's turn. Then, if we get a value of 1, the previous gameboard also has a value of 1, since it can only lead to X winning.
+
+Now, as the O player, we know if we make a move that goes to a max-value path, we will lose. But if we pick the min-value path, we will win, or worst case get a draw.
+
+This is the logic of minimax: take all of the options I can take, then put myself into the opponents shoes and consider what move the opponent would make on their turn, and to do that I consider what move I would make after that and so on and so forth (recursion gets a little hard to explain) until I get all the way down to the end of the game. Then, considering the possible values and perspective of both players, pick the values until the game ends. (top game has a value of 1; x should win)
+
+<img width="332" alt="lecture0-8" src="https://github.com/user-attachments/assets/bfc1f743-05ba-4eb2-a1fa-6a3ac7773d32">
+
+## More generally:
+
+<img width="314" alt="lecture0-9" src="https://github.com/user-attachments/assets/9c5647db-d326-41f9-a253-effeb39a6d6c">
+
+Green arrows try to maximize, orange try to minimize. This is what the minimax algorithm could look like in other games.
+
+### Pseudocode
+
+Given a state s:
+- MAX picks action a in Actions(s) that produces highest value of MIN-Value(Result(s, a)) *in order to calculate this, you have to know what the min player could do in the best case, and that requires recursion
+- MIN picks action a in Actions(s) that produces smallest value of MAX-Value(Result(s, a))
+
+function MAX-value(state):
+  if Terminal(state):
+    return Utility(state)
+  v = -infinity (want it to be as low as possible to always find something bigger than v)
+  for action in Actions(state):
+    v = max(v, MIN-Value(Result(state, action)))
+  return v
+
+For the MIN player, it's just the exact opposite of everything.
+
+This could be a long process with more complex games, so how can we optomize?
+
+## Optimization
+
+Going through every single option could take a long time, so there are some small tricks to improve the efficiency of minimax.
+
+<img width="345" alt="lecture0-10" src="https://github.com/user-attachments/assets/5d6112a4-dffc-46f6-9fc4-b468ac87b251">
+
+This is a very simple game. Up arrows try to maximize, down arrows try to minimize.
+
+Again, going through each and every single value is going to be inefficient. Here, we first choose an action, lets say going down the leftmost path, and choosing the maximum value possible. If we get to the next path and see a number MIN could pick that is smaller than our biggest value, we can immediately disregard it since our original actions **guarantees** a higher score, since our opponent can't do better than 3 if they want to minimize. Of course, our opponent could be stupid and pick 9 (if we go through the middle path), but that's if we leave it up to chance. Looking purely logically, we can immediately disregard the middle path to guarantee a higher score. This allows us to go through less actions and store less states while also finding the best possible action to take. Then we'd go through the rightmost path with the same logic.
+
+This method of optimization for minimax is called **Alpha-Beta Pruning**. It keeps track of the best you can do so far and the worst you can do so far, and prunning is the idea that we can search a tree more efficiently if we don't have to search through everything by removing the guaranteed worse nodes.
+
+But it still isn't good as games get more complex. Take the question; how many possible tic-tac-toe games are there? 255,168 possible games. Now compare it to chess. After just 4 moves each, there are 288 BILLION chess games that can happen. The total is a mindblowing 10<sup>29000<?sup> games.
+
+This is HORRIBLE for the minimax algorithm.
+
+But how can we find a better approach?
+
+## Depth-Limited Minimax
+
+While the normal minimaz checks every single possible layer, this algorithm only checks up to a certain number of moves and stops, because any other moves after that point could be computationally intractable to consider all the options.
+
+But what do we do after those moves and the game still isn't over?
+
+### Evaluation Function
+
+We use a function that estimates the expected utility of the game from a given state. For example, in chess if 1 means white wins, 0 is a draw, and -1 means black wins, an estimated score of 0.8 means white is likely to win, but it is not guaranteed.
