@@ -154,7 +154,7 @@ It's kind of like going through all of the nodes at the same time, bouncing betw
 It does find the optimal solution, but it has to explore a lot of states.
 
 # Source Code
-We understand how BFS and DFS works in pseudocode, so here's and idea of what it would look like using Python
+We understand how BFS and DFS works in pseudocode, so [here](https://github.com/Barca-Koseoglu/CS50-Introduction-to-Artificial-Intelligence-with-Python-Articles/blob/main/Lecture-0/Lecture%20Source%20Code/maze.py) it is in python.
 
 ## Human Intuition
 
