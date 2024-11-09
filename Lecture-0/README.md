@@ -304,3 +304,10 @@ But what do we do after those moves and the game still isn't over?
 ### Evaluation Function
 
 We use a function that estimates the expected utility of the game from a given state. For example, in chess if 1 means white wins, 0 is a draw, and -1 means black wins, an estimated score of 0.8 means white is likely to win, but it is not guaranteed.
+
+
+# Credits
+
+This article is completely written by me and demonstrates everything I learned from lecture 0 of the Harvard CS50 Introduction to Artificial Intelligence with Python course on EdX: https://learning.edx.org/course/course-v1:HarvardX+CS50AI+1T2020/home. The photos were taken from the slides provided in the course.
+
+The lecture can also be found on Youtube. https://www.youtube.com/watch?v=WbzNRTTrX0g&t=1s
