@@ -289,7 +289,7 @@ Again, going through each and every single value is going to be inefficient. Her
 
 This method of optimization for minimax is called **Alpha-Beta Pruning**. It keeps track of the best you can do so far and the worst you can do so far, and prunning is the idea that we can search a tree more efficiently if we don't have to search through everything by removing the guaranteed worse nodes.
 
-But it still isn't good as games get more complex. Take the question; how many possible tic-tac-toe games are there? 255,168 possible games. Now compare it to chess. After just 4 moves each, there are 288 BILLION chess games that can happen. The total is a mindblowing 10<sup>29000<?sup> games.
+But it still isn't good as games get more complex. Take the question; how many possible tic-tac-toe games are there? 255,168 possible games. Now compare it to chess. After just 4 moves each, there are 288 BILLION chess games that can happen. The total is a mindblowing 10<sup>29000</sup> games.
 
 This is HORRIBLE for the minimax algorithm.
 
