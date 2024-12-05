@@ -28,3 +28,24 @@ One thing to note is that humans normally reason with logic using language. AI, 
 **Propositional logic**: Logic based on statements about the world. **propositional symbols** are symbols- most likely letters- that represent a fact about the world. For example, *P* might represent the fact that it rained today.
 
 **Logcial connectives**: symbols that help us connect propositional symbols together to reason more facts that might exist. 
+
+### Types of logical connectives:
+
+**NOT (!)**
+
+<img width="150" alt="notpic" src="https://github.com/user-attachments/assets/da468bbf-af6f-446e-9527-b3a3c9d2e8b3">
+
+This is called a truth table, which demonstrates what NOT means when we attach it to a sentences. If P is false, NOT make it true, so P = False, !P == True. If P is True, then !P is False. It essentially makes the sentence the opposite of what it is, kind of like English.
+
+**AND (^)**
+
+<img width="212" alt="andtable" src="https://github.com/user-attachments/assets/ea7fffc3-af35-4981-a8a7-fd3e7546a0f4">
+
+AND **combines** two different sentences together. In the diagram, P and Q are two different sentences. P^Q is true if and only if both P and Q are true. If either one or both is false, then P^Q is false.
+
+**OR (v)**
+
+<img width="207" alt="ortable" src="https://github.com/user-attachments/assets/5b1207a6-0e52-4e21-b93a-2823554db923">
+
+OR also combines two sentences together, written P v Q. If at least one of the sentences are True, then P v Q will be True. If both are False, it will return False.
+
