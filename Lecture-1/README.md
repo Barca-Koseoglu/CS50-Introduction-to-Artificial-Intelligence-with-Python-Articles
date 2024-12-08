@@ -9,7 +9,7 @@ With AI, we want to take knowledge and find a way to reason with and act upon it
 
 ## What do we mean by reasoning based on knowldge?
 
-Take a look at these three sentences. Assume they're all true:
+Take a look at these three sentences:
 
 *If it didn't rain, Harry visited Hagrid today.*
 
@@ -41,7 +41,7 @@ This is called a truth table, which demonstrates what NOT means when we attach i
 
 <img width="212" alt="andtable" src="https://github.com/user-attachments/assets/ea7fffc3-af35-4981-a8a7-fd3e7546a0f4">
 
-AND **combines** two different sentences together. In the diagram, P and Q are two different sentences. P^Q is true if and only if both P and Q are true. If either one or both is false, then P^Q is false.
+AND **combines** two different sentences together. In the diagram, P and Q are two different sentences. P^Q is True if and only if both P and Q are True. If either one or both are False, then P^Q is False.
 
 **OR (v)**
 
