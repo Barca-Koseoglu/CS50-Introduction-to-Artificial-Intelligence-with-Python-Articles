@@ -49,3 +49,40 @@ AND **combines** two different sentences together. In the diagram, P and Q are t
 
 OR also combines two sentences together, written P v Q. If at least one of the sentences are True, then P v Q will be True. If both are False, it will return False.
 
+**Implication (->)**
+
+<img width="371" alt="impgraph" src="https://github.com/user-attachments/assets/de7b4c98-520c-4aa4-b822-aef28a8b2bdd" />
+
+Implication is when P IMPLIES Q. That means P makes a statment about Q. So if P is True, whatever Q is will be the answer. Let's say if it is raining, I will be indoors. This is P -> Q. Where P is True and Q is True. If Q is False, that means that if it's raining, I will be someplace other than indoors, which makes the statement False. Now, if P is False, then it doesnt affect Q at all. P makes no claim at all. If "if it is raining, I will remain indoors" is said, and it isn't raining, then the statment isn't making any claim, so whatever Q is, whether it's staying indoors or outdoors, will be True.
+
+**Biconditional (<->)**
+
+<img width="196" alt="bicon" src="https://github.com/user-attachments/assets/21c78eaa-cc62-43d0-a028-41f9520676c7" />
+
+A Biconditional says "if and only if." So you could say I will be indoors, if and only if it's raining. It demonstrates what will happen if it isn't raining. in this case you won't be indoors no matter what. If I am indoors, it's also reasonable to include that it's also raining. They both imply each other, that's why it's only true if both of them are the same.
+
+These five are going to form the core of propositional logical, the language we use in order to describe ideas and reason abou those ideas.
+
+## Additional terms
+
+**model**: assignment of a truth value to every propositional symbol, creating a "possible world". So if we have P and Q, where P claims it's raining and Q claims it's Tuesday, then the model could show a possible world where P is True and Q is False by assigning them the values (P=True, Q=False). If there are N vairables, the number of possible worlds is 2^n, because each variable can be 2 things, True or False.
+
+**knowledge Base**: A set of sentences known by a knowledge-based agent. We give our AI agent information about the world, like what's True and False.
+
+**Entailment**: α ⊨ β. In every model in which sentence α is True, sentence β is also True. "Alpha entails Beta". This means in every model, in every possible world, this stands. This helps us draw conclusions. So if alpha is something like "I know that it's Tuesday in January", then a reasonable beta could be "I know for sure that it's january". The first sentence *entails* the second statement. It's this idea of entailment that we want. We'd like our AI to infer and draw out conclusions from sentences we give it.
+
+### Inference example
+
+P: it is a Tuesday.
+
+Q: it is raining.
+
+R: Harry will go for a run.
+
+KB (knowledge base): (P ^ !Q) -> R (if it is Tuesday AND it is NOT raining, then that IMPLIES that Harry will go for a run.). P (P is True, it is Tuesday). !Q (Q means it's raining, so in order for !Q to be True, then it can not be raining).
+
+Using these, we can draw inferences. P ^ !Q is only True is both P and !Q are True. We know that both of those statements are True from the knowldge base, so since the left part is all True, that IMPlIES the right part is also True. So we can infer that R is True, and we can add it into our knowldge base. This is the beginning of an **Inference Algorithm**. The question we want to ask, with a given query Alpha, is does KB entail alpha? KB ⊨ α? This is equivalent to saying "given the information in KB, can we conclude that Alpha is True?"
+
+## How do we create these algorithms, though?
+
+Turns our there are many different algorithms. One of the simplest algorithms is called **model checking**.
