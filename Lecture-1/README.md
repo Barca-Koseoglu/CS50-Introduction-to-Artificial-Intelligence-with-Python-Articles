@@ -81,8 +81,10 @@ R: Harry will go for a run.
 
 KB (knowledge base): (P ^ !Q) -> R (if it is Tuesday AND it is NOT raining, then that IMPLIES that Harry will go for a run.). P (P is True, it is Tuesday). !Q (Q means it's raining, so in order for !Q to be True, then it can not be raining).
 
-Using these, we can draw inferences. P ^ !Q is only True is both P and !Q are True. We know that both of those statements are True from the knowldge base, so since the left part is all True, that IMPlIES the right part is also True. So we can infer that R is True, and we can add it into our knowldge base. This is the beginning of an **Inference Algorithm**. The question we want to ask, with a given query Alpha, is does KB entail alpha? KB ⊨ α? This is equivalent to saying "given the information in KB, can we conclude that Alpha is True?"
+Using these, we can draw inferences. P ^ !Q is only True is both P and !Q are True. We know that both of those statements are True from the knowldge base, so since the left part is all True, that IMPLIES the right part is also True. So we can infer that R is True, and we can add it into our knowldge base. This is the beginning of an **Inference Algorithm**. The question we want to ask, with a given query Alpha, does KB entail alpha? KB ⊨ α? This is equivalent to saying "given the information in KB, can we conclude that Alpha is True?"
 
 ## How do we create these algorithms, though?
 
-Turns our there are many different algorithms. One of the simplest algorithms is called **model checking**.
+Turns our there are many different algorithms. One of the simplest algorithms is called **model checking**. Remember, a model is a possible world, where there are many possible worlds where diferent things might be True or False and we can enumerate all of them.
+
+So if our model checking algorithm wants to determine if KB ⊨ α, it will enumerate all possible models and if in every model where KB is True, α is True, then KB entails α. 
