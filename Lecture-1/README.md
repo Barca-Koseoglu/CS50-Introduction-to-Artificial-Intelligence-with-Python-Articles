@@ -227,5 +227,55 @@ P v Q v S and !P v R v S infers Q v R v S, doubles don't matter
 
 What if P and !P? Then, we're left with nothing... it's called an empty clause, and that's always False.
 
-SO
+This is how we are going to do inference by resolution at a veyr high level:
 
+- To determine if KB ⊨ a: we check if (KB ^ !a) is a contradiction. SO we're literally proving something by contradiction. If it is, then KB ⊨ a. Otherwise, there's no entailment
+- To actually prove the contradction, though, we're going to convert (KB ^ !a) to conjunctive normal form. Then we can keep checkingto see if we can use resolution to produce a new clause. If we DO produce an empty clause, we have a contradiction, and KB entails a.
+
+### Example
+
+Does (A v B) ^ (!B v C) ^ (!C) entail A?
+
+First, we assume A is False. So our knowledge base will start with (A v B) ^ (!B v C) ^ (!C) ^ (!A). Now we can pick two clauses that we can resolve and apply the resolution rules to them. There's a C and a !C; we can resolve that. After the resolution, we can generate a new clause: !B. Now we repeat it again: can we use resolution with our new clause? well, A v B contradicts with !B, so we can get a new clause, A.
+
+Look what we have here. With our newly found clause, A and !A cancel each other out, being False, and making the enitre thing False, thus proving that (A v B) ^ (!B v C) ^ (!C) entails A.
+
+Instead of checking so many worlds, we just use this algorithm to determine what we can draw from our knowledge and see if we reach a contradcition. All of this is also just based on propsitional logic.
+
+But it isn't the only kind of logic to exist.
+
+## First-Order Logic
+
+Think back to the hogwarts houses puzzle. We had a whole bunch of symbols, each representing a kid at a house and every possibility of that.
+
+First-order objects helps us with this by giving us two different types of symbols: constant symbols, and predicate symbols. Constant symbols, which represent objects like Minerva, Hufflepuff, etc, and predicate symbols, which you can think of like functions and evaluate them to True or False, for example. Examples of them are like Person, House, Belongs To, etc. So person might hold True for minerva, but not gryffindor, since gryffindor is not a person. Belongs To is some sort of relation that relates the people to houses.
+
+A sentence in first-order logic may look something like Person(Minerva). This just means Minerva is a person. House(Gryffindor) means Gryffindor is a house. And all the prepositional logic that we used is going to work here to. We can say something like !House(Minerva), minerva isn't a house. The we can use BelongsTo(Minerva, Gryffindor), meaning Minerva belongs to Gryffindor (kind of like a function with arguments!).
+
+### Quantifiers: Universal Quantification
+
+Universal Quantification lets me express an idea, like something that's going to be True for all values of a variable.
+
+Uppercase V will be the symbol (it's normally an upside-down A). It means "for all."
+
+It looks like Vx. BelongsTo(x, Gryffindor) -> !BelongsTo(x, Hufflepuff). X could be any object. So for all values of x, this holds True. This is said like "For all objects x, if x belongs to gryffindor, then x does not belong to hufflepuff" or "anyone in gryffindor is not in hufflepuff"
+
+### Quantifiers: Existential Quantification
+
+Existential quantification says that something is going to be True for SOME values of a variable, at least 1 value of a variable.
+
+It's normally a backward E, but I'll just use E for simplicity (It looks like Ex., but this does NOT mean example). It also means "there exists."
+
+Ex. House(x) ^ BelongsTo(Minerva, x). "There exists an object x such that x is a house and minerva belongs to x" or "Minerva belongs to a house."
+
+Combining the quantificaitons, we can create far more complex logical statements. We could say something like this: Vx. Person(x) -> (Ey. House(y) ^ BelongsTo(x,y)). For all values x, x being a person implies that there exists an object y such that y is a house and x belongs to y. Maybe a little confusing, but very useful. Phrased more simply, it means every person belongs to a house.
+
+# Conclusion
+
+There are many other forms of logic, like second-order logic and third-order logic, but ultimately, they all allow us to express more and more complex idea of logic and helps us achieve the goal of representing knowledge. We want our AI agents to know information, represent that information, then reason and find entailments to find even more information.
+
+# Credits
+
+This article is completely written by me and demonstrates everything I learned from lecture 0 of the Harvard CS50 Introduction to Artificial Intelligence with Python course on EdX: https://learning.edx.org/course/course-v1:HarvardX+CS50AI+1T2020/home. The photos were taken from the slides provided in the course.
+
+The lecture can also be found on YouTube: https://www.youtube.com/watch?v=HWQLez87vqM
