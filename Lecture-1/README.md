@@ -270,6 +270,10 @@ Ex. House(x) ^ BelongsTo(Minerva, x). "There exists an object x such that x is a
 
 Combining the quantificaitons, we can create far more complex logical statements. We could say something like this: Vx. Person(x) -> (Ey. House(y) ^ BelongsTo(x,y)). For all values x, x being a person implies that there exists an object y such that y is a house and x belongs to y. Maybe a little confusing, but very useful. Phrased more simply, it means every person belongs to a house.
 
+# Code
+
+The source code for this is not complex, just very tedious to explain and read, so check out the directory named "source code" in this lecture directory and review it in your own time.
+
 # Conclusion
 
 There are many other forms of logic, like second-order logic and third-order logic, but ultimately, they all allow us to express more and more complex idea of logic and helps us achieve the goal of representing knowledge. We want our AI agents to know information, represent that information, then reason and find entailments to find even more information.
