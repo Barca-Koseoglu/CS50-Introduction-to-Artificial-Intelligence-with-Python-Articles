@@ -88,3 +88,11 @@ Using these, we can draw inferences. P ^ !Q is only True is both P and !Q are Tr
 Turns our there are many different algorithms. One of the simplest algorithms is called **model checking**. Remember, a model is a possible world, where there are many possible worlds where diferent things might be True or False and we can enumerate all of them.
 
 So if our model checking algorithm wants to determine if KB ⊨ α, it will enumerate all possible models and if in every model where KB is True, α is True, then KB entails α. 
+
+<img width="328" alt="adaptation" src="https://github.com/user-attachments/assets/cf8aa2ad-7f4a-499c-bc78-c0b2243b432d" />
+
+Take this, as an example. Our sentences are on the top, our knowledge base is there, and our query is R: Harry will go for a run. When we model check, we see all possible combinations of True and False. Taking all our sentences, there a 8 possible worlds. Now, we gotta find a world that allows our KB to be True and our query to be True. The only one that works is the third one from the bottom. That's because P and Q being False and True satisfies everything in the knowledge base, and the first sentence in our knowledge base, being True, implies that R is True, thus KB entails R.
+
+## Knowledge Engineering
+
+The process of taking a problem and figuring our what propositional symbols to use in order to encode an idea is called knowledge engineering. Software engineers take a problem and try to find out how to represent that knowledge using a computer. If we can take a general problem and break it down into a way that computers understand that with logic, then we can use an inference algorithm like model checking to actually solve it.
