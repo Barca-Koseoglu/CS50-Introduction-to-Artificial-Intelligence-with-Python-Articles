@@ -106,3 +106,17 @@ Using those probabilities, we can draw other pieces of information about other t
 P(C|rain) = P(C,rain)/P(rain). The comma and AND can be used interchangeably. Dividing by the P of rain is just some numerical constant. Oftentimes, we can just not worry about what the exact value of it is and just know that it is a constant value. Sometimes we can just represent it as alpha (a): aP(C, rain). We just simplified 1/P(rain) into a constant, which is a. So P(C|rain) is proportional to aP(C,rain). a<.08, .02>. We know that probabilities must add up to 1. In this case, they add up to .1; that's where our alpha comes in. we can figure out what alpha is by making it so that a(.1) = 1, so alpha is 10. Multiplying both number by 10 gives us <.8, .2>.
 
 ## Probability Rules
+
+**Negation**: P(!a) = 1 - P(a). What's the probablitiy of event a NOT happening. It happens or it doesn't and adding up those porbabilities must give you 1.
+
+**Inclusion-exclusion**: P(a v b) = P(a) + P(b) - P(a ^ b). For example, what's the probability of rolling a 6 with the red dice or blue dice? Noramally, you'd think it's just adding them together, but actually you're overcounting. If red and blue both roll 6, then it we would be counting it as 2 instead of 1.
+
+**Margenalization**: P(a) = P(a,b) + P(a, !b). Given a variable called b we don't know much about, we know it either happens or doesn't happen. So in order to calculate the probability of a, either a happens and b happens or a happens and b doesn't happen.
+
+Sometime b might not just be an event that did or didn't happen, it could be a broader probability distribution where there are multiple possible values. So we don't just sum up b and not b, we sum up all the other possible values it could take on.
+
+$$P(X = x_i) = \sum_{j}^{} P(X = x_i, Y = y_i$$
+
+If we have two random variable, x and y, the probability that x is equal to some value x<sub>i</sub> (which is some value that the variable will take on), then we sum up over j, where j is all the possible values that y can take on. It's essentially the same as the other formula. It finds the probability of x based on x and all values of y summed up.
+
+Here's an example:
