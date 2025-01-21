@@ -119,4 +119,6 @@ $$P(X = x_i) = \sum_{j}^{} P(X = x_i, Y = y_i$$
 
 If we have two random variable, x and y, the probability that x is equal to some value x<sub>i</sub> (which is some value that the variable will take on), then we sum up over j, where j is all the possible values that y can take on. It's essentially the same as the other formula. It finds the probability of x based on x and all values of y summed up.
 
-Here's an example:
+Here's an example
+
+
