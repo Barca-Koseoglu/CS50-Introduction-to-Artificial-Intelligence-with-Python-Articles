@@ -115,10 +115,173 @@ P(C|rain) = P(C,rain)/P(rain). The comma and AND can be used interchangeably. Di
 
 Sometime b might not just be an event that did or didn't happen, it could be a broader probability distribution where there are multiple possible values. So we don't just sum up b and not b, we sum up all the other possible values it could take on.
 
-$$P(X = x_i) = \sum_{j}^{} P(X = x_i, Y = y_i$$
+$$P(X = x_i) = \sum_{j}^{} P(X = x_i, Y = y_i)$$
 
 If we have two random variable, x and y, the probability that x is equal to some value x<sub>i</sub> (which is some value that the variable will take on), then we sum up over j, where j is all the possible values that y can take on. It's essentially the same as the other formula. It finds the probability of x based on x and all values of y summed up.
 
-Here's an example
+### Example
 
+Take the joint-probability image again. We wan't to know P(C = cloud), if it's cloudy. Marginalization says that in order to know that, we need to consider the other variable, the idea that it's rainy. It's either raining or not raining, and we just sum up those values. So P(C = cloudy) = P(C = cloud, R = rain) + P(C = cloud, R = !rain) = 0.08 + 0.32 = 0.40.
 
+**Conditioning**: P(a) = P(a|b)P(b) + P(a|!b)P(!b). Very similar to the margenalization rule, but instead we have acces to their conditional probabilities. So if we want to know the probability of a happening, and there's another variable b, either b happens or doesn't happen, and so the probability of a happeneing is the probability that a happens given b and the probability that b happens at all plus the probability that a happens given b doesn't happen times the probability that b doesn't happen. Conditioning also has a rule for multiple possible values.
+
+$$P(X = x_i) = \sum_{j}^{} P(X = x_i | Y = y_i)P(Y = y_i)$$
+
+It's just adding up all those conditional probabilities.
+
+## Models.
+
+Oh boy.
+
+To take all these different ideas of probabilities and represent them inside our AI agent, we use probabalistic models.
+
+## Bayesian Networks
+
+A bayesian network is a data structure that represents the dependencies among random variables. Most variables aren't completely independent of each other; they're all connected in some sort of way. Like if it's rainy today, it might increase the likelihood of my flight or train getting delayed.
+
+A Bayesian network is a directed graph, individual nodes wtih arrows and edges that connect nodes and point in a particular direction. Each node represents a random variable in a Bayesian network. An arrow from X to Y means X is a parent of Y. Each node X has a probability distribution P(X | Parents(x)). An easy way to understand the parents is to imagine it as cause and effect, with the parents being the causes.
+
+### Example:
+
+<img width="184" alt="bayesiannatwork" src="https://github.com/user-attachments/assets/b1148f93-62ca-4984-90b6-1c3a43c908f3" />
+
+Imagine we want to get to an appointment. We either attend it, or miss it. There are a number of factors that this Bayesian network represents, the **nodes** being the different variables. Rain affects Maintenance, Maintenence affects the train whcih is also affected by rain, and the train affects if I get to my appointment. Theres a bunch of dependence on parent nodes, as seen from the graph. The whole idea is to create a probability distribution for all the nodes based on their parents.
+
+Starting with rain, it has no dependencies, no conditions, so it just has some plain probabilities. Let's say the chances are <0.7, 0.2, 0.1>, for none, light, and heavy respectively.
+
+Now let's check out maintenence. Maintenence is yes or no. The heavier the rain is, the less likely it is that there will be maintenence. Now, it'll be a conditional probability.
+
+<img width="173" alt="maintaintrack" src="https://github.com/user-attachments/assets/e4167a13-3147-4ddb-b002-09875536f005" />
+
+Now, we move on to train, which is either on time or delayed. It depends on both the rain and maintenance.
+
+<img width="161" alt="Screenshot 2025-01-25 235028" src="https://github.com/user-attachments/assets/e2b681a9-defa-49dd-9838-bc2cec1baca8" />
+
+Each pair of R and M has a probability of happening of 1, and when they do happen, those are the probabilities you get. You can use real-world data to actually get the data.
+
+Finally, we see my probability of making it to my long-awaited appointment. The other parts of the network don't directly affect if I make it, but they do indirectly affect it. Still, what we do is we just take the probability of being on time and attending, on time and missing, delayed and attending, and delayed and missing.
+
+Now we can get to computing some probabilities.
+
+Take our chances of having light rain, P(light). We can just take the probability.
+
+But what if we wanted more complex joint probabilities? Let's take the probability of light rain and no track maintenance, P(light, no). It would be P(light)P(no|light). The probability of light rain times the probability of no maintenance given light rain. We can keep going with this cycle, like P(light, no, delayed) is P(light)P(no|light)P(delayed|light, no). We say proabbility of delayed given light rain and no maintenance because the train has two parents, but if we also wanted the probability of missing the train, we would just us that entire thing times P(miss|delayed) since it's dependent upon just the rain being delayed or not.
+
+# Inference
+
+Back to the main show.
+
+What we really want to do is to get new pieces of info using inference: given things we know to be True, can we draw conclusions. Now given probabilities, can we figure out other probabilities using inference?
+
+## Inference parts
+- Query X: variable for which to compute distribution
+- Evidence variables E: observed variables for event e
+- Hidden variable Y: non-evidence, non-query variable
+- Goal: calculate P(X|e)
+
+### Example:
+
+P(Appointment|light, no)
+
+Our query is Appointment, our observed variables are light rain and no maintenance. The hidden variable is whether or not the train is delayed.
+
+Remember, a conditional probability is proportional to the joint probability. P(a|b) = cP(a,b), where c is a constant. So P(Appointment|light, no) = cP(Appointment,light,no). But we need all four of the variables, including our hidden variable.
+
+And this is where marginalization comes in handy. There's only two ways we can get any configuration of an appointment, Either all this happens and the train is on time, or it's delayed. So the probability becomes c[P(appointment, light, no, on time) + P(appointment, light, no, delayed)].
+
+## Inference by Enumeration
+
+This formula that we way is called inference by enumeration.
+
+$$P(X = e) = aP(X, e) = a\sum_{y}^{} P(X, e, y)$$
+
+X is the query variable, e is the evidence, y ranges over values of hidden variables, and a normalizes the result.
+ # Code
+ 
+ The source code is in a folder next to this readme file. Making use of libraries, we can do things like this. We can absolutely make it ourselves, but someone already made it, so it's best to use theirs instead of remaking everything.
+
+## Approximate Inference
+
+This method is actually really slow when it comes to a lot of variables or unknowns. So, we try to approximate our result.
+
+## Sampling
+
+In the process of sampling, we take a sample of all the variables. How? We're going to sample each node according to it's probability distribution. So for rain, we'll use something like a random number generator to pick based on the probabilites. When we move on to maintenance, we'll only sample the probabilities of the one we picked for rain, let's say we picked R = None. Then we keep going. After finishing one sample, we take multiple samples. Then, when faced with a question like P(Train = on time), we can just approximate it instead of finding the exact probability.
+
+<img width="607" alt="sampling" src="https://github.com/user-attachments/assets/c477f26a-692a-49c9-be26-88a01ebbe47c" />
+
+The highligted samples are ones where the train's on time, so in 6/8 cases, that's the likelihood the train is on time. The more samples we take, the better that estimate gets.
+
+But that was an unconditional probability. What about a conditional one? So maybe P(Rain = light | Train = on time). So given the same set of samples, we only care about the ones when the train is on time. And now, looking at the cases when the train is on time, we pick the two where the train also has light rain, giving us 2/6 = 1/3 possible cases (remember, we disregard the samples that were delayed because we don't need them.
+
+This sampling is called rejection sampling, and there are more ways to sample. One problem this type could have is if the evidence we're looking for is very unlikely.
+
+## Likelihood Weighting
+
+Rather than sample everything, we fix the values for the evdience variables, then sample the non-evidence variables using conditional proabbilities in the Bayesian network, then weight each sample by its **likelihood**: the probability of all of the evidence. We got to make sure that if our evidence is extremely unlikely, we account for how unlikely it is.
+
+### Example:
+
+P(Rain = light | train = on time)
+
+We first fix our evidence variable, then go through the same-old process. After sampling the variables, we weight our fixed value based on the evidence, or parents. In this case, it would have a weight of 0.6.
+
+## Uncertainty over time
+
+We've dealt with variables that have probabiltiies, but what if those variables changed over time? For instance, the sky goes from no rain to light rain to heavy rain.
+
+So we have sunny and rainy days; we want to know the probability that it will be sunny tomorrow, the day after that, or the day after that.
+
+## Markov models
+
+To achieve this, we're going to have a randome variable for every possible time step, like using days.
+
+X<sub>t</sub>: Weather at time t. You can see that this might take an insane amount of data, given trying to predict the weather tomorrow with, for example, 3 years of evidence.
+
+When we're trying to do this inference of a computer, reasonably, it's helpful to make simplifying assumptions, even if they aren't truly accurate.
+
+**Markov assumption**: The assumption that the current state depends on only a finite fixed number of previous states. Instead of using all of history's weather data, we can just use yesterday's, for example.
+
+**Markov Chain**: A sequence of random variables where the distribution of each variable follows the Markov assumption. A very simple example is today's weather predicting tomorrow's weather.
+
+<img width="325" alt="todtmr" src="https://github.com/user-attachments/assets/873c9701-953d-483a-9cb7-06c39931f1a6" />
+
+Just taking real-life assumptions, this is a possible way to represent the probabilties of tomorrow's weather. This is called a **Transtition model**. Using it, we can begin to construct a Markov chain.
+
+<img width="593" alt="markovchain" src="https://github.com/user-attachments/assets/e0afadfe-a677-4395-a32d-08a6fdf0c2e9" />
+
+## Sensor Models
+
+In practice, though, knowing for certain the exact state of the world isn't known, but we can sense information somehow, computers and AI can use sensors.
+
+Using sensors, we try to find the hidden state, the underlying True state of the world with observations that AI can make. For example, a hidden state might be a robot's position, if it's exploring unknown territory, but it does have an observation- robot sensor data- to help it sense and collect data on things around it. We can infer from our observations our hidden state, and the hidden state effects our observations.
+
+Another hidden state could be worlds spoken, but AI can only observe audio waveforms. Again, a hidden state is seen in user engagement, and AI observes this with website analytics. Our example is weather, our hidden state is the weather, and just imagine that the only sensor that our AI has is a security camera looking at a building entrance, and we try to infer what the weather is- based on whether or not employees are using umbrellas.
+
+## Hidden Markov Model
+
+A hidden Markov model is a Markov model for a system with hidden states that generate some observed event.
+
+<img width="343" alt="hiidenmark" src="https://github.com/user-attachments/assets/a1a28622-27cc-4d23-b4a8-b596bb978a1d" />
+
+This is literally just using the observation to predict what the underlying state is.
+
+### Sensor Markov Assumption
+
+This is the assumption that the evidence variable depends on only the corresponding state. This means people bringing umbrellas or not is entirely dependent on if it's sunny or rainy today.
+
+<img width="596" alt="superhidemarky" src="https://github.com/user-attachments/assets/add32e8b-ca46-44c2-9fa9-d9f63b040128" />
+
+Instead of sun-sun-rain-rain-rain, we have the upper level, representing the underlying state of the world, and the lower level, showing each of the states of X producing the observation that people brought or did not bring umbrellas.
+
+## Tasks
+
+These are some tasks you might want to do given these kinds of information, like infering stuff about the future or the past of these hidden states.
+
+<img width="340" alt="tasks" src="https://github.com/user-attachments/assets/6e4dd08a-b659-4f98-849b-7e2bd7847819" />
+
+# Credits
+
+This article is completely written by me and demonstrates everything I learned from lecture 1 of the Harvard CS50 Introduction to Artificial Intelligence with Python course on EdX: https://learning.edx.org/course/course-v1:HarvardX+CS50AI+1T2020/home. The photos were taken from the slides provided in the course.
+
+This lecture can also be found on YouTube: https://www.youtube.com/watch?v=D8RRq3TbtHU&t=6869s
