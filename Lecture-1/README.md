@@ -280,6 +280,6 @@ There are many other forms of logic, like second-order logic and third-order log
 
 # Credits
 
-This article is completely written by me and demonstrates everything I learned from lecture 0 of the Harvard CS50 Introduction to Artificial Intelligence with Python course on EdX: https://learning.edx.org/course/course-v1:HarvardX+CS50AI+1T2020/home. The photos were taken from the slides provided in the course.
+This article is completely written by me and demonstrates everything I learned from lecture 1 of the Harvard CS50 Introduction to Artificial Intelligence with Python course on EdX: https://learning.edx.org/course/course-v1:HarvardX+CS50AI+1T2020/home. The photos were taken from the slides provided in the course.
 
 The lecture can also be found on YouTube: https://www.youtube.com/watch?v=HWQLez87vqM
